@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+    <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+    <script
+      src="https://unpkg.com/obniz@3.7.0/obniz.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reset.min.css"
+      integrity="sha512-Mjxkx+r7O/OLQeKeIBCQ2yspG1P5muhAtv/J+p2/aPnSenciZWm5Wlnt+NOUNA4SHbnBIE/R2ic0ZBiCXdQNUg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css"
+      integrity="sha512-zu0eodDPCBAZf1vnIgwZ6qchMBt1xqgGkS9vBjVmunoH8pU7cc9OQKBiSQCclpvqySupy9Y1pLZc87VB40G4Sw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/black.min.css"
+      integrity="sha512-zB0aIw1hR3hViObaUdwCG3ICqkblcZFhSLursL3P8mAqFJQvItchD/FoXo539E1lUZTqC/cTxmugRp1b5NsQRA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Theme used for syntax highlighted code -->
+
+    <script src="src/setupObniz.js"></script>
+  </head>
+  <body>
+    <input type="file" accept="application/pdf" id="input-pdf" />
+    <div class="reveal">
+      <div class="slides" id="slide-container">
+        <section>テスト</section>
+      </div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
+      integrity="sha512-SG4yH2eYtAR5eK4/VL0bhqOsIb6AZSWAJjHOCmfhcaqTkDviJFoar/VYdG96iY7ouGhKQpAg3CMJ22BrZvhOUA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="src/convertPdfToImage.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"
+      integrity="sha512-Xu/cezKABTI81MGnaBm64vdiS7XkttHeYGOgr2Mdga0bTplSBGongLq2lhK2HwL79wefKM0u4uTCLD0ha1sRzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+      });
+      const obniz = new Obniz.M5StickC('');
+      // let led;
+      // obniz.onconnect = () => {
+      //   led = obniz.wired('LED', { anode: 0, cathode: 1 });
+      // };
+      Reveal.on('slidechanged', (event) => {
+        obniz.display.clear();
+        obniz.display.print(`スライド${event.indexh + 1}枚目`);
+        if (event.indexh === 2) {
+          obniz.led.on();
+        } else {
+          obniz.led.off();
+        }
+      });
+      const input = document.getElementById('input-pdf');
+      input.addEventListener('change', (event) => {
+        onInputChange(event);
+      });
+      const onInputChange = async (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader(file);
+        reader.onload = (e) => {
+          getAllImageUrl(e.target.result).then((images) => {
+            const slideContainer = document.getElementById('slide-container');
+            images.forEach((image, i) => {
+              const section = document.createElement('section');
+              const img = document.createElement('img');
+              img.src = image;
+              section.appendChild(img);
+              slideContainer.appendChild(section);
+            });
+          });
+        };
+        reader.readAsDataURL(file, 'utf-8');
+      };
+    </script>
+  </body>
+</html>
