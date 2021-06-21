@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-
-    <title>reveal.js</title>
-    <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
-    <script
-      src="https://unpkg.com/obniz@3.7.0/obniz.js"
-      crossorigin="anonymous"
-    ></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reset.min.css"
@@ -21,31 +9,86 @@
       referrerpolicy="no-referrer"
     />
     <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css"
-      integrity="sha512-zu0eodDPCBAZf1vnIgwZ6qchMBt1xqgGkS9vBjVmunoH8pU7cc9OQKBiSQCclpvqySupy9Y1pLZc87VB40G4Sw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
     <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/black.min.css"
-      integrity="sha512-zB0aIw1hR3hViObaUdwCG3ICqkblcZFhSLursL3P8mAqFJQvItchD/FoXo539E1lUZTqC/cTxmugRp1b5NsQRA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
-    <!-- Theme used for syntax highlighted code -->
-
-    <script src="src/setupObniz.js"></script>
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <div class="reveal">
-      <div class="slides" id="slide-container">
-        <section>
-          <input type="file" accept="application/pdf" id="input-pdf" />
-        </section>
-        <section>あいう</section>
+    <div id="main-container">
+      <div class="input-container select-pdf-container">
+        <div class="input-container-title">Upload Your PDF File</div>
+
+        <div class="drag-drop-area" id="drag-drop-pdf">
+          <div id="pdf-icon">
+            <img
+              src="src/assets/pdf-file-outlined-interface-symbol_icon-icons.com_57528.svg"
+              width="80px"
+              height="80px"
+            />
+          </div>
+          <div class="drag-drop-text">Drag & Drop</div>
+        </div>
+        <div
+          style="
+            margin-top: 18px;
+            font-family: 'Poppins sans-serif';
+            color: #8d8888;
+          "
+        >
+          Or
+        </div>
+        <input id="input-pdf" type="file" accept="application/pdf" />
+        <div>
+          <label
+            for="input-pdf"
+            class="select-file-button pure-material-button-contained"
+          >
+            Select a File
+          </label>
+        </div>
       </div>
+      <div class="input-container select-pdf-container">
+        <div class="input-container-title">Upload Your Script File</div>
+
+        <div class="drag-drop-area" id="drag-drop-script">
+          <div id="script-icon">
+            <img src="src/assets/js.svg" width="80px" height="80px" />
+          </div>
+          <div class="drag-drop-text">Drag & Drop</div>
+        </div>
+        <div
+          style="
+            margin-top: 18px;
+            font-family: 'Poppins sans-serif';
+            color: #8d8888;
+          "
+        >
+          Or
+        </div>
+        <div>
+          <label
+            for="input-script"
+            class="select-file-button pure-material-button-contained"
+          >
+            Select a File
+          </label>
+        </div>
+
+        <input id="input-script" type="file" accept=".js" />
+      </div>
+    </div>
+    <div id="start-presentation-container">
+      <button
+        id="start-presentation-button"
+        class="pure-material-button-contained unable-button"
+      >
+        Start Presentation
+      </button>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
@@ -54,52 +97,13 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="src/convertPdfToImage.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"
-      integrity="sha512-Xu/cezKABTI81MGnaBm64vdiS7XkttHeYGOgr2Mdga0bTplSBGongLq2lhK2HwL79wefKM0u4uTCLD0ha1sRzQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="src/dragAndDrop.js"></script>
+    <script src="src/main.js"></script>
     <script>
-      // More info about initialization & config:
-      // - https://revealjs.com/initialization/
-      // - https://revealjs.com/config/
-      Reveal.initialize({
-        hash: true,
+      const startButton = document.getElementById('start-presentation-button');
+      startButton.addEventListener('click', async () => {
+        await startPresentation();
       });
-      const obniz = new Obniz('');
-      let servo;
-      obniz.onconnect = () => {
-        servo = obniz.wired('ServoMotor', { gnd: 0, vcc: 1, signal: 2 });
-      };
-      Reveal.on('slidechanged', (event) => {
-        if (event.indexh === 1) {
-          servo.angle(90.0);
-        } else {
-          servo.angle(10.0);
-        }
-      });
-      const input = document.getElementById('input-pdf');
-      input.addEventListener('change', (event) => {
-        onInputChange(event);
-      });
-      const onInputChange = async (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader(file);
-        reader.onload = (e) => {
-          getAllImageUrl(e.target.result).then((images) => {
-            const slideContainer = document.getElementById('slide-container');
-            images.forEach((image, i) => {
-              const section = document.createElement('section');
-              const img = document.createElement('img');
-              img.src = image;
-              section.appendChild(img);
-              slideContainer.appendChild(section);
-            });
-          });
-        };
-        reader.readAsDataURL(file, 'utf-8');
-      };
     </script>
   </body>
 </html>
