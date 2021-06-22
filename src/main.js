@@ -12,6 +12,14 @@ const watchActivateStartButton = (pdfInput, scriptInput) => {
   };
 
   pdfInput.addEventListener('change', (event) => {
+    const fileNameContainer = document.getElementById('pdf-file-name');
+    let fileName = event.target.files[0].name;
+    console.log(fileName.length);
+    if (fileName.length > 34) {
+      const string = fileName.slice(0, -4);
+      fileName = string.slice(0, 30) + '... .pdf';
+    }
+    fileNameContainer.innerHTML = fileName;
     if (checkFileSelected(event.target) && checkFileSelected(scriptInput)) {
       const startButton = document.getElementById('start-presentation-button');
       startButton.classList.remove('unable-button');
@@ -19,6 +27,13 @@ const watchActivateStartButton = (pdfInput, scriptInput) => {
   });
 
   scriptInput.addEventListener('change', (event) => {
+    const fileNameContainer = document.getElementById('script-file-name');
+    let fileName = event.target.files[0].name;
+    if (fileName.length > 33) {
+      const string = fileName.slice(0, -3);
+      fileName = string.slice(0, 30) + '... .js';
+    }
+    fileNameContainer.innerHTML = fileName;
     if (checkFileSelected(event.target) && checkFileSelected(pdfInput)) {
       const startButton = document.getElementById('start-presentation-button');
       startButton.classList.remove('unable-button');
