@@ -1,8 +1,21 @@
-const obniz = new Obniz.M5StickC('');
+const membersList = [
+  {
+    name: 'hanako',
+    obnizID: '6886-6800',
+  },
+  { name: 'tarou', obnizID: '4548-5104' },
+];
+
+const obnizes = [];
+membersList.forEach((v) => {
+  obnizes[v.name] = new Obniz(v.obnizID);
+});
 
 slideFunctions[1] = () => {
-  obniz.display.clear();
-  obniz.display.print('Hello World');
+  Object.keys(obnizes).forEach(function (key) {
+    obnizes[key].display.clear();
+    obnizes[key].display.print('テスト');
+  });
 };
 
 slideFunctions[2] = () => {
