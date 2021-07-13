@@ -8,14 +8,22 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+    <script
+      src="https://unpkg.com/obniz@3.7.0/obniz.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://fonts.googleapis.com/css?family=Poppins"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/default.min.css"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
@@ -90,6 +98,34 @@
         Start Presentation
       </button>
     </div>
+    <div id="preview-cover"></div>
+    <div id="preview-container">
+      <div id="preview-current-slide-container">
+        <div id="preview-curernt-slide">
+          <img
+            id="slide-img"
+            src="src/assets/スクリーンショット 2021-07-06 6.36.19.png"
+          />
+        </div>
+        <div id="preview-current-slide-controller">
+          <div class="controller-button" id="controller-back">
+            <img src="src/assets/outline_navigate_before_black_48dp.png" />
+          </div>
+          <div id="controller-text">
+            スライド<span id="controller-slide-num"></span>
+          </div>
+          <div class="controller-button" id="controller-next">
+            <img src="src/assets/outline_navigate_next_black_48dp.png" />
+          </div>
+        </div>
+      </div>
+      <div id="preview-current-code-contaienr">
+        <pre>
+          <code id="code">
+          </code>
+        </pre>
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
       integrity="sha512-SG4yH2eYtAR5eK4/VL0bhqOsIb6AZSWAJjHOCmfhcaqTkDviJFoar/VYdG96iY7ouGhKQpAg3CMJ22BrZvhOUA=="
@@ -99,10 +135,55 @@
     <script src="src/convertPdfToImage.js"></script>
     <script src="src/dragAndDrop.js"></script>
     <script src="src/main.js"></script>
+    <script src="src/loadScript.js"></script>
+
     <script>
+      hljs.initHighlightingOnLoad();
+      hljs.initLineNumbersOnLoad();
       const startButton = document.getElementById('start-presentation-button');
+      const cover = document.getElementById('preview-cover');
+      const preview = document.getElementById('preview-container');
+      cover.addEventListener('click', (e) => {
+        e.target.style.display = 'none';
+        preview.style.display = 'none';
+      });
       startButton.addEventListener('click', async () => {
-        await startPresentation();
+        const scriptUrl = await getFileUrl(scriptInput.files[0]);
+        loadSlideScript(scriptUrl);
+        getAllImageUrl('test.pdf').then((images) => {
+          let currentSlideState = 1;
+          const controllerSlideNum = document.getElementById(
+            'controller-slide-num'
+          );
+          controllerSlideNum.innerHTML = `${currentSlideState} / ${images.length}`;
+
+          const slideImage = document.getElementById('slide-img');
+          slideImage.src = images[currentSlideState - 1];
+
+          const code = document.getElementById('code');
+          code.innerHTML = slideFunctions[currentSlideState - 1];
+
+          const backButton = document.getElementById('controller-back');
+          const nextButton = document.getElementById('controller-next');
+          backButton.addEventListener('click', () => {
+            if (currentSlideState > 1) {
+              currentSlideState--;
+              controllerSlideNum.innerHTML = `${currentSlideState} / ${images.length}`;
+              slideImage.src = images[currentSlideState - 1];
+              code.innerHTML = slideFunctions[currentSlideState - 1];
+            }
+          });
+          nextButton.addEventListener('click', () => {
+            if (currentSlideState < images.length) {
+              currentSlideState++;
+              controllerSlideNum.innerHTML = `${currentSlideState} / ${images.length}`;
+              slideImage.src = images[currentSlideState - 1];
+              code.innerHTML = slideFunctions[currentSlideState - 1];
+            }
+          });
+        });
+        cover.style.display = 'block';
+        preview.style.display = 'flex';
       });
     </script>
   </body>
