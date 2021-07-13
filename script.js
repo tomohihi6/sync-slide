@@ -1,14 +1,7 @@
-const membersList = [
-  {
-    name: 'hanako',
-    obnizID: '6886-6800',
-  },
-  { name: 'tarou', obnizID: '4548-5104' },
-];
-
 const obnizes = [];
-membersList.forEach((v) => {
-  obnizes[v.name] = new Obniz(v.obnizID);
+
+csvData.forEach((v) => {
+  obnizes[v[1]] = new Obniz(v[0]);
 });
 
 slideFunctions[1] = () => {

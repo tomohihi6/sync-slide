@@ -1,4 +1,5 @@
 let slideFunctions = {};
+const csvData = JSON.parse(sessionStorage.getItem('csv'));
 
 const loadSlideScript = (url, callback = () => {}) => {
   const script = document.createElement('script');
