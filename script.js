@@ -1,8 +1,14 @@
-const obniz = new Obniz.M5StickC('');
+const obnizes = [];
+
+csvData.forEach((v) => {
+  obnizes[v[1]] = new Obniz(v[0]);
+});
 
 slideFunctions[1] = () => {
-  obniz.display.clear();
-  obniz.display.print('Hello World');
+  Object.keys(obnizes).forEach(function (key) {
+    obnizes[key].display.clear();
+    obnizes[key].display.print('テスト');
+  });
 };
 
 slideFunctions[2] = () => {

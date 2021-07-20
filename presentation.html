@@ -37,7 +37,9 @@
   </head>
   <body>
     <div class="reveal">
-      <div class="slides" id="slide-container"></div>
+      <div class="slides" id="slide-container">
+        <section>あ</section>
+      </div>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
@@ -60,8 +62,9 @@
       Reveal.initialize({
         hash: true,
       });
-      const loadSlideImage = () => {
-        const images = JSON.parse(sessionStorage.getItem('images'));
+      const loadSlideImage = async () => {
+        // const images = JSON.parse(sessionStorage.getItem('images'));
+        const images = await getAllImageUrl('test.pdf');
         const slideContainer = document.getElementById('slide-container');
         images.forEach((image, i) => {
           const section = document.createElement('section');
@@ -93,5 +96,6 @@
         reader.readAsDataURL(file, 'utf-8');
       };
     </script>
+    <script src="script.js"></script>
   </body>
 </html>

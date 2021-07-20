@@ -89,6 +89,38 @@
 
         <input id="input-script" type="file" accept=".js" />
       </div>
+      <div class="input-container select-pdf-container">
+        <div class="input-container-title">Upload Your CSV File</div>
+        <div id="csv-file-name" class="file-name"></div>
+        <div class="drag-drop-area" id="drag-drop-csv">
+          <div id="csv-icon">
+            <img
+              src="src/assets/pdf-file-outlined-interface-symbol_icon-icons.com_57528.svg"
+              width="80px"
+              height="80px"
+            />
+          </div>
+          <div class="drag-drop-text">Drag & Drop</div>
+        </div>
+        <div
+          style="
+            margin-top: 18px;
+            font-family: 'Poppins sans-serif';
+            color: #8d8888;
+          "
+        >
+          Or
+        </div>
+        <input id="input-csv" type="file" accept=".csv" />
+        <div>
+          <label
+            for="input-csv"
+            class="select-file-button pure-material-button-contained"
+          >
+            Select a File
+          </label>
+        </div>
+      </div>
     </div>
     <div id="start-presentation-container">
       <button
