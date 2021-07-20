@@ -62,33 +62,42 @@ const makeCsv = (csvData) => {
   }
   sessionStorage.setItem('csv', JSON.stringify(data));
   return data;
+
+const getFileUrl = async (file) => {
+  let result = await new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file, 'utf-8');
+    reader.onload = (e) => {
+      resolve(e.target.result);
+    };
+  });
+  return result;
 };
 
 const startPresentation = async () => {
   const pdfFile = pdfInput.files[0];
   const scriptFile = scriptInput.files[0];
   const csvFile = csvInput.files[0];
-
-  const loadFile = async (file, type) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file, 'utf-8');
-    reader.onload = async (e) => {
-      if (type === 'pdf') {
-        const images = await getAllImageUrl(e.target.result);
-        sessionStorage.setItem('images', JSON.stringify(images));
-        document.location = './presentation.html';
-      } else if (type === 'script') {
-        sessionStorage.setItem('script', e.target.result);
-      } else return;
-    };
-  };
-
+  
   if (csvFile) {
     getCsv(csvFile);
-  }
+  }  
+  
+  sessionStorage.setItem('script', getFileUrl(scriptFile));
+  const images = await getAllImageUrl(getFileUrl(pdfFile));
+  sessionStorage.setItem('images', JSON.stringify(images));
+  document.location = './presentation.html';
 
-  await loadFile(scriptFile, 'script');
-  await loadFile(pdfFile, 'pdf');
+  
+}
+
+const scriptToString = () => {
+  const scriptFile = scriptInput.files[0];
+  const reader = new FileReader();
+  reader.readAsText(scriptFile, 'utf-8');
+  reader.onload = (e) => {
+    return e.target.result;
+  };
 };
 
 enableDragDrop(pdfArea, pdfInput, 'application/pdf');
