@@ -5,6 +5,8 @@ const loadSlideScript = (url, callback = () => {}) => {
   script.type = 'text/javascript';
   script.src = url;
 
+  console.log(url);
+
   script.onload = callback;
 
   document.body.appendChild(script);
