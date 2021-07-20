@@ -149,8 +149,9 @@
       });
       startButton.addEventListener('click', async () => {
         const scriptUrl = await getFileUrl(scriptInput.files[0]);
+        const pdfUrl = await getFileUrl(pdfInput.files[0]);
         loadSlideScript(scriptUrl);
-        getAllImageUrl('test.pdf').then((images) => {
+        getAllImageUrl(pdfUrl).then((images) => {
           let currentSlideState = 1;
           const controllerSlideNum = document.getElementById(
             'controller-slide-num'
