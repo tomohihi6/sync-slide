@@ -37,9 +37,7 @@
   </head>
   <body>
     <div class="reveal">
-      <div class="slides" id="slide-container">
-        <section>あ</section>
-      </div>
+      <div class="slides" id="slide-container"></div>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
@@ -64,12 +62,13 @@
       });
       const loadSlideImage = async () => {
         // const images = JSON.parse(sessionStorage.getItem('images'));
-        const images = await getAllImageUrl('test.pdf');
+        const images = JSON.parse(sessionStorage.getItem('images'));
         const slideContainer = document.getElementById('slide-container');
         images.forEach((image, i) => {
           const section = document.createElement('section');
           const img = document.createElement('img');
           img.src = image;
+          img.style.width = '100%';
           section.appendChild(img);
           slideContainer.appendChild(section);
         });

@@ -32,6 +32,6 @@ const action = (slideNum) => {
 };
 
 Reveal.on('slidechanged', (event) => {
-  const currentSlideNum = event.indexh;
+  const currentSlideNum = event.indexh + 1;
   action(currentSlideNum);
 });

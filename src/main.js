@@ -23,7 +23,9 @@ const watchActivateStartButton = (pdfInput, scriptInput) => {
     }
     fileNameContainer.innerHTML = fileName;
     if (checkFileSelected(event.target) && checkFileSelected(scriptInput)) {
-      const startButton = document.getElementById('start-presentation-button');
+      const startButton = document.getElementById(
+        'preview-presentation-button'
+      );
       startButton.classList.remove('unable-button');
     }
   });
@@ -37,7 +39,9 @@ const watchActivateStartButton = (pdfInput, scriptInput) => {
     }
     fileNameContainer.innerHTML = fileName;
     if (checkFileSelected(event.target) && checkFileSelected(pdfInput)) {
-      const startButton = document.getElementById('start-presentation-button');
+      const startButton = document.getElementById(
+        'preview-presentation-button'
+      );
       startButton.classList.remove('unable-button');
     }
   });
@@ -62,6 +66,7 @@ const makeCsv = (csvData) => {
   }
   sessionStorage.setItem('csv', JSON.stringify(data));
   return data;
+};
 
 const getFileUrl = async (file) => {
   let result = await new Promise((resolve) => {
@@ -78,18 +83,16 @@ const startPresentation = async () => {
   const pdfFile = pdfInput.files[0];
   const scriptFile = scriptInput.files[0];
   const csvFile = csvInput.files[0];
-  
+
   if (csvFile) {
     getCsv(csvFile);
-  }  
-  
-  sessionStorage.setItem('script', getFileUrl(scriptFile));
-  const images = await getAllImageUrl(getFileUrl(pdfFile));
+  }
+
+  sessionStorage.setItem('script', await getFileUrl(scriptFile));
+  const images = await getAllImageUrl(await getFileUrl(pdfFile));
   sessionStorage.setItem('images', JSON.stringify(images));
   document.location = './presentation.html';
-
-  
-}
+};
 
 const scriptToString = () => {
   const scriptFile = scriptInput.files[0];

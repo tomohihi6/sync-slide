@@ -94,11 +94,7 @@
         <div id="csv-file-name" class="file-name"></div>
         <div class="drag-drop-area" id="drag-drop-csv">
           <div id="csv-icon">
-            <img
-              src="src/assets/pdf-file-outlined-interface-symbol_icon-icons.com_57528.svg"
-              width="80px"
-              height="80px"
-            />
+            <img src="src/assets/csv-file.svg" width="80px" height="80px" />
           </div>
           <div class="drag-drop-text">Drag & Drop</div>
         </div>
@@ -124,10 +120,10 @@
     </div>
     <div id="start-presentation-container">
       <button
-        id="start-presentation-button"
+        id="preview-presentation-button"
         class="pure-material-button-contained unable-button"
       >
-        Start Presentation
+        Preview Presentation
       </button>
     </div>
     <div id="preview-cover"></div>
@@ -157,6 +153,12 @@
           </code>
         </pre>
       </div>
+      <button
+        id="start-presentation-button"
+        class="pure-material-button-contained"
+      >
+        Start Presentation
+      </button>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
@@ -172,14 +174,16 @@
     <script>
       hljs.initHighlightingOnLoad();
       hljs.initLineNumbersOnLoad();
-      const startButton = document.getElementById('start-presentation-button');
+      const previewButton = document.getElementById(
+        'preview-presentation-button'
+      );
       const cover = document.getElementById('preview-cover');
       const preview = document.getElementById('preview-container');
       cover.addEventListener('click', (e) => {
         e.target.style.display = 'none';
         preview.style.display = 'none';
       });
-      startButton.addEventListener('click', async () => {
+      previewButton.addEventListener('click', async () => {
         const scriptUrl = await getFileUrl(scriptInput.files[0]);
         const pdfUrl = await getFileUrl(pdfInput.files[0]);
         loadSlideScript(scriptUrl);
@@ -194,7 +198,7 @@
           slideImage.src = images[currentSlideState - 1];
 
           const code = document.getElementById('code');
-          code.innerHTML = slideFunctions[currentSlideState - 1];
+          code.innerHTML = slideFunctions[currentSlideState];
 
           const backButton = document.getElementById('controller-back');
           const nextButton = document.getElementById('controller-next');
@@ -203,7 +207,7 @@
               currentSlideState--;
               controllerSlideNum.innerHTML = `${currentSlideState} / ${images.length}`;
               slideImage.src = images[currentSlideState - 1];
-              code.innerHTML = slideFunctions[currentSlideState - 1];
+              code.innerHTML = slideFunctions[currentSlideState];
             }
           });
           nextButton.addEventListener('click', () => {
@@ -211,12 +215,16 @@
               currentSlideState++;
               controllerSlideNum.innerHTML = `${currentSlideState} / ${images.length}`;
               slideImage.src = images[currentSlideState - 1];
-              code.innerHTML = slideFunctions[currentSlideState - 1];
+              code.innerHTML = slideFunctions[currentSlideState];
             }
           });
         });
         cover.style.display = 'block';
         preview.style.display = 'flex';
+      });
+      const startButton = document.getElementById('start-presentation-button');
+      startButton.addEventListener('click', async () => {
+        await startPresentation();
       });
     </script>
   </body>

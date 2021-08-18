@@ -1,47 +1,55 @@
-const obnizes = [];
+let obnizes = [];
 
 csvData.forEach((v) => {
-  obnizes[v[1]] = new Obniz(v[0]);
+  obnizes[v[1]] = new Obniz.M5StickC(v[0]);
+  console.log(obnizes[v[1]]);
 });
 
-slideFunctions[1] = () => {
+slideFunctions[2] = () => {
   Object.keys(obnizes).forEach(function (key) {
-    obnizes[key].display.clear();
-    obnizes[key].display.print('テスト');
+    if (obnizes[key].connectionState === 'connected') {
+      obnizes[key].display.clear();
+      obnizes[key].display.print('Hello World');
+    }
   });
 };
 
-slideFunctions[2] = () => {
-  obniz.led.on();
-};
-
 slideFunctions[3] = () => {
-  obniz.led.off();
+  Object.keys(obnizes).forEach(function (key) {
+    if (obnizes[key].connectionState === 'connected') {
+      obnizes[key].led.blink();
+    }
+  });
 };
 
 slideFunctions[4] = () => {
-  obniz.buttonA.onchange = (state) => {
-    obniz.display.clear();
-    obniz.display.print('buttonA was pushed');
-  };
+  Object.keys(obnizes).forEach(function (key) {
+    if (obnizes[key].connectionState === 'connected') {
+      obnizes[key].led.off();
+      obnizes[key].buttonA.onchange = () => {
+        obnizes[key].led.on();
+      };
+      obnizes[key].buttonB.onchange = () => {
+        obnizes[key].led.off();
+      };
+    }
+  });
 };
 
 slideFunctions[5] = () => {
-  obniz.buttonB.onchange = (state) => {
-    obniz.display.clear();
-    obniz.display.print('buttonB was pushed');
-  };
-};
-
-slideFunctions[6] = () => {
-  obniz.setupIMUWait().then(() => {
-    let interval;
-    interval = setInterval(() => {
-      obniz.imu.getAccelWait().then((accel) => {
-        obniz.display.print(`accX: ${accel.x}`);
-        obniz.display.print(`accY: ${accel.y}`);
-        obniz.display.print(`accZ: ${accel.z}`);
+  Object.keys(obnizes).forEach(function (key) {
+    if (obnizes[key].connectionState === 'connected') {
+      obnizes[key].setupIMUWait().then(() => {
+        let interval;
+        interval = setInterval(() => {
+          obnizes[key].imu.getAccelWait().then((accel) => {
+            obnizes[key].display.clear();
+            obnizes[key].display.print(`accX: ${accel.x}`);
+            obnizes[key].display.print(`accY: ${accel.y}`);
+            obnizes[key].display.print(`accZ: ${accel.z}`);
+          });
+        }, 2000);
       });
-    }, 1000);
+    }
   });
 };
