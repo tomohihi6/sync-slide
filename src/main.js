@@ -2,10 +2,10 @@ const pdfArea = document.getElementById('drag-drop-pdf');
 const pdfInput = document.getElementById('input-pdf');
 const scriptArea = document.getElementById('drag-drop-script');
 const scriptInput = document.getElementById('input-script');
-const csvArea = document.getElementById('drag-drop-script');
+const csvArea = document.getElementById('drag-drop-csv');
 const csvInput = document.getElementById('input-csv');
 
-const watchActivateStartButton = (pdfInput, scriptInput) => {
+const watchActivateStartButton = (pdfInput, scriptInput, csvInput) => {
   const checkFileSelected = (inputElement) => {
     if (inputElement.files[0]) {
       return true;
@@ -44,6 +44,16 @@ const watchActivateStartButton = (pdfInput, scriptInput) => {
       );
       startButton.classList.remove('unable-button');
     }
+  });
+
+  csvInput.addEventListener('change', (event) => {
+    const fileNameContainer = document.getElementById('csv-file-name');
+    let fileName = event.target.files[0].name;
+    if (fileName.length > 33) {
+      const string = fileName.slice(0, -3);
+      fileName = string.slice(0, 30) + '... .csv';
+    }
+    fileNameContainer.innerHTML = fileName;
   });
 };
 
@@ -106,4 +116,4 @@ const scriptToString = () => {
 enableDragDrop(pdfArea, pdfInput, 'application/pdf');
 enableDragDrop(scriptArea, scriptInput, 'text/javascript');
 enableDragDrop(csvArea, csvInput, 'text/csv');
-watchActivateStartButton(pdfInput, scriptInput);
+watchActivateStartButton(pdfInput, scriptInput, csvInput);
