@@ -1,0 +1,279 @@
+body {
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#container {
+  max-width: 1920px;
+  max-height: 1080px;
+  margin: 0;
+}
+
+#header {
+  display: flex;
+  width: 100%;
+  height: 6%;
+  justify-content: space-between;
+  color: white;
+  max-width: 1400px;
+  margin: auto;
+}
+
+#header-title {
+  margin-left: 2vw;
+  display: flex;
+  align-items: center;
+}
+
+#header-user {
+  display: flex;
+  align-items: center;
+  margin-right: 2vw;
+}
+
+.user-icon {
+  margin-right: 1vw;
+}
+
+#icon {
+  width: 50px;
+  height: 50px;
+}
+
+#main-container {
+  display: flex;
+  flex-direction: row;
+  height: 88%;
+  margin: 1rem auto;
+  max-width: 1400px;
+}
+
+#video-container {
+  display: flex;
+  flex: 4;
+  flex-direction: column;
+  margin: 0 1rem;
+}
+
+#video {
+  height: 2000px;
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
+  background-color: #fff;
+  border: 3px solid #707070;
+}
+
+#slide-container {
+  width: 100%;
+  height: 100%;
+}
+
+#video-summary {
+  margin-top: 1rem;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border: 3px solid #707070;
+  border-radius: 5px;
+}
+
+#video-title {
+  color: #eee;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  word-break: break-all;
+}
+
+.video-summary-wrapper {
+  margin: 0 1rem;
+  margin-top: 1rem;
+}
+
+#source-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  margin-left: 3px;
+}
+
+#source-code {
+  height: 100%;
+}
+
+.tab_wrap {
+  height: 78%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type='radio'] {
+  display: none;
+}
+
+.tab_area {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+  font-size: 0;
+  margin: 0;
+}
+
+.tab_area label {
+  width: 5vw;
+  margin-right: 5px;
+  padding: 1vw 0;
+  color: rgb(20, 20, 20);
+  background-color: #e9e9e9;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: ease 0.2s opacity;
+  /* border: solid 1px; */
+  border-bottom: 0;
+}
+
+.tab_area label:hover {
+  opacity: 0.5;
+}
+
+.panel_area {
+  height: 85%;
+  border: 3px solid #707070;
+  border-radius: 10px;
+}
+
+.tab_panel {
+  width: 100%;
+  display: none;
+}
+
+#tab1:checked ~ .tab_area .tab1_label {
+  background: #363333;
+  color: white;
+}
+#tab1:checked ~ .panel_area #panel1 {
+  display: block;
+}
+#tab2:checked ~ .tab_area .tab2_label {
+  background: #363333;
+  color: white;
+  font-size: 12px;
+}
+#tab2:checked ~ .panel_area #panel2 {
+  display: block;
+}
+
+#memo-container {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px;
+  height: 10vw;
+  margin-top: 1px;
+  padding: 0 1vw 1vw 1vw;
+}
+
+.memo {
+  flex: 5;
+  width: 100%;
+  height: auto;
+  font-family: Monaco, 'Andale Mono', 'Courier New';
+  border: solid 1px #cccccc;
+}
+
+.subTitle {
+  flex: 1;
+  margin: 0;
+  margin: 1vw 0;
+}
+
+.blinking {
+  animation: blink 2s infinite;
+  background-color: #000;
+}
+
+#agent-container {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px;
+  height: 10vw;
+  margin-top: 1px;
+  padding: 0 1vw 1vw 1vw;
+  align-items: center;
+}
+
+#agent {
+  width: 50%;
+  height: 100%;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#console-container {
+  height: 20%;
+  color: #000;
+  background: #fff;
+  margin-top: 9px;
+  overflow: auto;
+  position: relative;
+  border: 3px solid #707070;
+  border-radius: 5px;
+}
+
+#console-title {
+  color: #191919;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem;
+  background: #f4f4f4;
+}
+
+ul#console {
+  list-style-type: none;
+  font-family: 'system-ui';
+  font-size: 14px;
+  line-height: 25px;
+  padding-left: 5px;
+}
+
+ul#console li {
+  border-bottom: solid 1px #80808038;
+}
+
+#panel_area code {
+  height: 100%;
+}
+
+#back-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+#back-button-container:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+#back-text {
+  color: #000;
+  margin-left: 10px;
+}
+
+#panel_area code {
+  height: 100%;
+  padding: 0;
+}
+
+#panel_area pre {
+  margin: 0;
+}

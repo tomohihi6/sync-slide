@@ -8,6 +8,16 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
+    <!-- firebase -->
+    <script src="/__/firebase/8.1.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script src="/__/firebase/8.1.2/firebase-auth.js"></script>
+    <script src="/__/firebase/8.1.2/firebase-storage.js"></script>
+    <script src="/__/firebase/8.1.2/firebase-database.js"></script>
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+
     <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
     <script
       src="https://unpkg.com/obniz@3.7.0/obniz.js"
@@ -51,6 +61,7 @@
           Or
         </div>
         <input id="input-pdf" type="file" accept="application/pdf" />
+
         <div>
           <label
             for="input-pdf"
@@ -170,6 +181,7 @@
     <script src="src/dragAndDrop.js"></script>
     <script src="src/main.js"></script>
     <script src="src/loadScript.js"></script>
+    <script src="src/storage.js"></script>
 
     <script>
       hljs.initHighlightingOnLoad();
@@ -184,6 +196,34 @@
         preview.style.display = 'none';
       });
       previewButton.addEventListener('click', async () => {
+        const pdfFile = pdfInput.files[0];
+        const scriptFile = scriptInput.files[0];
+
+        const storageRefPdf = firebase
+          .storage()
+          .ref()
+          .child(`ioteach-slide/${pdfFile.name}`);
+        const storageRefScript = firebase
+          .storage()
+          .ref()
+          .child(`ioteach-slide/${scriptFile.name}`);
+
+        const metadataPdf = {
+          contentType: 'application/pdf',
+          contentEncoding: 'UTF-8',
+        };
+
+        const metadataScript = {
+          contentType: 'text/javascript',
+          contentEncoding: 'UTF-8',
+        };
+
+        Promise.all([
+          uploadTask(storageRefPdf, pdfFile, metadataPdf, 'pdf'),
+          uploadTask(storageRefScript, scriptFile, metadataScript, 'script'),
+        ]).then((result) => {
+          console.log(result);
+        });
         const scriptUrl = await getFileUrl(scriptInput.files[0]);
         const pdfUrl = await getFileUrl(pdfInput.files[0]);
         loadSlideScript(scriptUrl);

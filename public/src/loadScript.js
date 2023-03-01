@@ -1,5 +1,14 @@
 let slideFunctions = {};
-const csvData = JSON.parse(sessionStorage.getItem('csv'));
+let obnizes = [];
+let onSectionLeave = {};
+let index = 0;
+
+const action = (slideNum) => {
+  if (slideNum in slideFunctions) {
+    console.log(slideNum);
+    slideFunctions[slideNum]();
+  }
+};
 
 const loadSlideScript = (url, callback = () => {}) => {
   const script = document.createElement('script');
@@ -8,9 +17,9 @@ const loadSlideScript = (url, callback = () => {}) => {
 
   console.log(url);
 
-  script.onload = callback;
-
   document.body.appendChild(script);
+
+  script.onload = callback;
 };
 
 const indexedFunction = (functions) => {
@@ -25,13 +34,8 @@ const indexedFunction = (functions) => {
   return null;
 };
 
-const action = (slideNum) => {
-  if (slideNum in slideFunctions) {
-    slideFunctions[slideNum]();
-  }
-};
-
 Reveal.on('slidechanged', (event) => {
-  const currentSlideNum = event.indexh + 1;
-  action(currentSlideNum);
+  if (onSectionLeave[index]) onSectionLeave[index]();
+  index = event.indexh + 1;
+  action(index);
 });

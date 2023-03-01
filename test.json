@@ -1,0 +1,19 @@
+{
+  "users": {
+    "hanako": {
+      "name": "hanako",
+      "contentExist": "true",
+      "contents": {
+        "c1": "obniz-seminar",
+        "c2": "m5StickC-seminar"
+      }
+    },
+    "tarou": {}
+  },
+  "contents": {
+    "obniz-seminar": {
+      "pdfFilePath": "/",
+      "scriptFilePath": "/"
+    }
+  }
+}
